@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
 		marginBottom: 15,
 		borderRadius: 20,
 		overflow: "hidden",
-		elevation: 5, // Тень для Android
-		shadowColor: "#000", // Тень для iOS
+		elevation: 5,
+		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: 0.1,
 		shadowRadius: 10,
