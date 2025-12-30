@@ -14,6 +14,7 @@ export default function TabLayout() {
 				options={{
 					title: "Медитация",
 					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="meditation" size={24} color="black" />,
+					headerShown: false,
 				}}
 			/>
 			<Tabs.Screen
@@ -21,6 +22,7 @@ export default function TabLayout() {
 				options={{
 					title: "Дыхание",
 					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-windy" size={26} color={color} />,
+					headerShown: false,
 				}}
 			/>
 			<Tabs.Screen
@@ -28,6 +30,7 @@ export default function TabLayout() {
 				options={{
 					title: "Звуки",
 					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-night" size={26} color={color} />,
+					headerShown: false,
 				}}
 			/>
 		</Tabs>
