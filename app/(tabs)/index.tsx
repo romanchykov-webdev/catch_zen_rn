@@ -18,7 +18,7 @@ interface Session {
 export default function HomeScreen() {
 	const renderItem = ({ item }: { item: Session }) => (
 		<TouchableOpacity style={styles.card}>
-			<LinearGradient colors={item.color} style={styles.gradient}>
+			<LinearGradient colors={[...item.color] as [string, string]} style={styles.gradient}>
 				<View>
 					<Text style={styles.cardTitle}>{item.title}</Text>
 					<Text style={styles.cardDuration}>{item.duration}</Text>
@@ -30,7 +30,7 @@ export default function HomeScreen() {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.header}>Найди свой дзен catch_zen_RN</Text>
+			<Text style={styles.header}>Найди свой дзен </Text>
 
 			<FlatList
 				data={SESSIONS}
