@@ -107,7 +107,7 @@ export const WrapperScreen = ({ children }: { children: React.ReactNode }) => {
 				style={{
 					flex: 1,
 					paddingTop: insets.top,
-					paddingBottom: insets.bottom,
+					// paddingBottom: insets.bottom,
 					paddingLeft: insets.left,
 					paddingRight: insets.right,
 				}}

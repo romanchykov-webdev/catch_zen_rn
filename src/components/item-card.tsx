@@ -12,7 +12,7 @@ export const ItemCard = ({ item }: { item: Props }) => {
 	return (
 		<TouchableOpacity style={styles.card}>
 			<LinearGradient colors={[...item.color] as [string, string]} style={styles.gradient}>
-				<View>
+				<View style={styles.cardContent}>
 					<Text style={styles.cardTitle}>{item.title}</Text>
 					<Text style={styles.cardDuration}>{item.duration}</Text>
 				</View>
@@ -24,7 +24,8 @@ export const ItemCard = ({ item }: { item: Props }) => {
 
 const styles = StyleSheet.create({
 	card: {
-		marginBottom: 15,
+		// marginBottom: 15,
+
 		borderRadius: 20,
 		overflow: "hidden",
 		elevation: 5,
@@ -38,6 +39,9 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
+	},
+	cardContent: {
+		gap: 20,
 	},
 	cardTitle: {
 		color: "white",
