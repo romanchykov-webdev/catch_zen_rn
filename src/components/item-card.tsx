@@ -27,7 +27,7 @@ export const ItemCard = ({ item }: { item: Props }) => {
 					<Text style={styles.cardTitle}>{item.title}</Text>
 					<Text style={styles.cardDuration}>{item.duration} минут</Text>
 				</View>
-				<Text style={styles.playIcon}>▶</Text>
+				{/* <Text style={styles.playIcon}>▶</Text> */}
 			</LinearGradient>
 		</TouchableOpacity>
 	);

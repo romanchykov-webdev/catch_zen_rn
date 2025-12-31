@@ -96,7 +96,7 @@ export const WrapperScreen = ({ children }: { children: React.ReactNode }) => {
 					<BlurredOrb color={COLORS.PURPLE} />
 				</Animated.View>
 
-				{/* Вуаль сделали совсем тонкой, чтобы не глушить цвета */}
+				{/* Вуаль  */}
 				<View
 					style={{ ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(255,255,255,0.1)" }}
 					pointerEvents="none"

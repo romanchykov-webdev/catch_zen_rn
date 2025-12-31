@@ -3,7 +3,7 @@ import { PlayerHeader } from "@/src/components/screens/media-palaer-screen/playe
 import { SkiaAnimatedSphere } from "@/src/components/screens/media-palaer-screen/skia-animated-sphere";
 import { useAudioPlayer } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { WrapperScreen } from "../src/components/wrapper-screen";
 import { getById } from "../src/services/getItemById";
@@ -13,6 +13,7 @@ interface MeditationData {
 	title: string;
 	duration: number;
 	color: string[];
+	category_id: number;
 	image?: string;
 	sound?: string;
 }
@@ -27,13 +28,29 @@ export default function MeditationPlayer() {
 
 	const player = useAudioPlayer(soundUri || "");
 
+	// console.log("meditationData", meditationData);
+
+	// Вычисляем название категории через useMemo вместо switch в рендере
+	const categoryName = useMemo(() => {
+		switch (meditationData?.category_id) {
+			case 1:
+				return "Медитация";
+			case 2:
+				return "Дыхание";
+			case 3:
+				return "Сон";
+			default:
+				return "";
+		}
+	}, [meditationData?.category_id]);
+
 	useEffect(() => {
 		const loadMeditation = async () => {
 			if (!id) return;
 			const data = await getById(id);
 			if (data) {
 				setMeditationData(data as MeditationData);
-				setSoundUri(data.sound || "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+				setSoundUri(data.sound);
 			}
 			setLoading(false);
 		};
@@ -46,14 +63,19 @@ export default function MeditationPlayer() {
 			setIsPlaying(false); // Сбрасываем состояние при загрузке нового трека
 		}
 	}, [soundUri]);
+
 	// Устанавливаем зацикливание при изменении isLooping
 	useEffect(() => {
 		if (player && soundUri) {
-			// В expo-audio зацикливание устанавливается через свойство loop
-			if (player.loop !== undefined) {
-				player.loop = isLooping;
-			} else if (typeof player.setLooping === "function") {
-				player.setLooping(isLooping);
+			try {
+				// В expo-audio зацикливание устанавливается через свойство loop
+				// Используем type assertion для доступа к свойству loop
+				const audioPlayer = player as any;
+				if (typeof audioPlayer.loop !== "undefined") {
+					audioPlayer.loop = isLooping;
+				}
+			} catch (error) {
+				console.error("❌ Ошибка установки зацикливания:", error);
 			}
 		}
 	}, [isLooping, player, soundUri]);
@@ -105,7 +127,11 @@ export default function MeditationPlayer() {
 	return (
 		<WrapperScreen>
 			<View style={styles.container}>
-				<PlayerHeader title={meditationData.title} duration={meditationData.duration} />
+				<PlayerHeader
+					title={meditationData.title}
+					duration={meditationData.duration}
+					categoryName={categoryName}
+				/>
 				<SkiaAnimatedSphere isPlaying={isPlaying} />
 				<PlayerControls
 					isPlaying={isPlaying}

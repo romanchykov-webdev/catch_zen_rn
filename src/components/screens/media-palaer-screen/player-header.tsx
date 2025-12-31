@@ -1,19 +1,18 @@
-import { ButtonBack } from "@/src/components/button-back";
 import { StyleSheet, Text, View } from "react-native";
 
 interface PlayerHeaderProps {
 	title: string;
 	duration: number;
+	categoryName: string;
 }
 
-export const PlayerHeader = ({ title, duration }: PlayerHeaderProps) => {
+export const PlayerHeader = ({ title, duration, categoryName }: PlayerHeaderProps) => {
 	return (
 		<View style={styles.header}>
-			<View style={styles.buttonBackContainer}>
-				<ButtonBack />
-			</View>
 			<Text style={styles.title}>{title}</Text>
-			<Text style={styles.subtitle}>Медитация • {duration} мин</Text>
+			<Text style={styles.subtitle}>
+				{categoryName} • {duration} мин
+			</Text>
 		</View>
 	);
 };
@@ -29,6 +28,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		// backgroundColor: "red",
 	},
-	title: { fontSize: 24, fontWeight: "bold", color: "white", textShadowRadius: 5 },
+	title: { fontSize: 24, fontWeight: "bold", color: "white", textShadowRadius: 5, textAlign: "center" },
 	subtitle: { fontSize: 16, color: "rgba(255,255,255,0.8)", marginTop: 5 },
 });

@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 export const ButtonBack = () => {
 	return (
 		<TouchableOpacity onPress={() => router.back()} style={styles.button}>
-			<Ionicons name="arrow-back" size={24} color="gray" />
+			<Ionicons name="arrow-back" size={40} color="gray" />
 		</TouchableOpacity>
 	);
 };
