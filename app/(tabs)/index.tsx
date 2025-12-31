@@ -52,7 +52,7 @@ export default function HomeScreen() {
 	return (
 		<WrapperScreen>
 			<View style={styles.container}>
-				<TitleScreen title="Дыхание" />
+				<TitleScreen title="Медитация" />
 
 				<CardList
 					data={data}

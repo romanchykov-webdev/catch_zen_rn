@@ -19,7 +19,7 @@ export default function TabLayout() {
 					backgroundColor: "transparent",
 				},
 
-				tabBarBackground: () => <BlurView intensity={80} tint="light" style={StyleSheet.absoluteFill} />,
+				tabBarBackground: () => <BlurView intensity={100} tint="light" style={StyleSheet.absoluteFill} />,
 			}}
 		>
 			<Tabs.Screen

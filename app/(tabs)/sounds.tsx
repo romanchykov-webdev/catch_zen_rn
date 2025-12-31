@@ -51,7 +51,7 @@ export default function SoundsScreen() {
 	return (
 		<WrapperScreen>
 			<View style={styles.container}>
-				<TitleScreen title="Дыхание" />
+				<TitleScreen title="Звуки для сна" />
 
 				<CardList
 					data={data}
