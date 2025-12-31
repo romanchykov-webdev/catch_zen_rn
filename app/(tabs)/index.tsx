@@ -10,13 +10,7 @@ export default function HomeScreen() {
 		<WrapperScreen>
 			<View style={styles.container}>
 				<TitleScreen title="Дыхание" />
-				{/* <FlatList
-					data={BREATHING}
-					renderItem={({ item }) => <ItemCard item={item} />}
-					keyExtractor={(item) => item.id}
-					contentContainerStyle={styles.list}
-					showsVerticalScrollIndicator={false}
-				/> */}
+
 				<CardList
 					data={BREATHING}
 					renderItem={({ item }) => <ItemCard item={item} />}
