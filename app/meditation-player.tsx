@@ -23,6 +23,7 @@ export default function MeditationPlayer() {
 	const [loading, setLoading] = useState(true);
 	const [soundUri, setSoundUri] = useState<string | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [isLooping, setIsLooping] = useState(false);
 
 	const player = useAudioPlayer(soundUri || "");
 
@@ -45,6 +46,21 @@ export default function MeditationPlayer() {
 			setIsPlaying(false); // Сбрасываем состояние при загрузке нового трека
 		}
 	}, [soundUri]);
+	// Устанавливаем зацикливание при изменении isLooping
+	useEffect(() => {
+		if (player && soundUri) {
+			// В expo-audio зацикливание устанавливается через свойство loop
+			if (player.loop !== undefined) {
+				player.loop = isLooping;
+			} else if (typeof player.setLooping === "function") {
+				player.setLooping(isLooping);
+			}
+		}
+	}, [isLooping, player, soundUri]);
+
+	const toggleLooping = () => {
+		setIsLooping((prev) => !prev);
+	};
 
 	const togglePlayPause = () => {
 		if (!player || !soundUri) {
@@ -90,10 +106,13 @@ export default function MeditationPlayer() {
 		<WrapperScreen>
 			<View style={styles.container}>
 				<PlayerHeader title={meditationData.title} duration={meditationData.duration} />
-
 				<AnimatedSphere isPlaying={isPlaying} />
-
-				<PlayerControls isPlaying={isPlaying} onToggle={togglePlayPause} />
+				<PlayerControls
+					isPlaying={isPlaying}
+					isLooping={isLooping}
+					onToggle={togglePlayPause}
+					onToggleLoop={toggleLooping}
+				/>
 			</View>
 		</WrapperScreen>
 	);
