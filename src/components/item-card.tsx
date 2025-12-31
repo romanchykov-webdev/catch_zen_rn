@@ -1,4 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
@@ -6,15 +7,25 @@ interface Props {
 	title: string;
 	duration: string;
 	color: string[];
+	image: string;
 }
 
 export const ItemCard = ({ item }: { item: Props }) => {
+	const router = useRouter();
+
+	const handlePress = () => {
+		router.push({
+			pathname: "/meditation-player",
+			params: { id: String(item.id) },
+		});
+	};
+
 	return (
-		<TouchableOpacity style={styles.card}>
+		<TouchableOpacity style={styles.card} onPress={handlePress}>
 			<LinearGradient colors={[...item.color] as [string, string]} style={styles.gradient}>
 				<View style={styles.cardContent}>
 					<Text style={styles.cardTitle}>{item.title}</Text>
-					<Text style={styles.cardDuration}>{item.duration}</Text>
+					<Text style={styles.cardDuration}>{item.duration} минут</Text>
 				</View>
 				<Text style={styles.playIcon}>▶</Text>
 			</LinearGradient>

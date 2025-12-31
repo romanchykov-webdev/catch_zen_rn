@@ -1,76 +1,99 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Audio } from "expo-av";
+import { AnimatedSphere } from "@/src/components/screens/media-palaer-screen/animated-sphere";
+import { PlayerControls } from "@/src/components/screens/media-palaer-screen/player-controls";
+import { PlayerHeader } from "@/src/components/screens/media-palaer-screen/player-header";
+import { useAudioPlayer } from "expo-audio";
+import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { WrapperScreen } from "../src/components/wrapper-screen";
+import { getById } from "../src/services/getItemById";
+
+interface MeditationData {
+	id: number;
+	title: string;
+	duration: number;
+	color: string[];
+	image?: string;
+	sound?: string;
+}
 
 export default function MeditationPlayer() {
-	const [sound, setSound] = useState<Audio.Sound | null>(null);
+	const { id } = useLocalSearchParams<{ id: string }>();
+	const [meditationData, setMeditationData] = useState<MeditationData | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [soundUri, setSoundUri] = useState<string | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
 
-	// Анимация пульсации центральной сферы
-	const pulse = useSharedValue(1);
+	const player = useAudioPlayer(soundUri || "");
 
 	useEffect(() => {
-		pulse.value = withRepeat(withTiming(1.2, { duration: 4000, easing: Easing.inOut(Easing.ease) }), -1, true);
-		return () => {
-			if (sound) sound.unloadAsync();
-		};
-	}, [sound]);
-
-	const animatedSphereStyle = useAnimatedStyle(() => ({
-		transform: [{ scale: pulse.value }],
-		opacity: isPlaying ? 0.8 : 0.5,
-	}));
-
-	async function togglePlayPause() {
-		if (!sound) {
-			// Здесь будет загрузка файла, пока для примера:
-			const { sound: newSound } = await Audio.Sound.createAsync({
-				uri: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-			});
-			setSound(newSound);
-			await newSound.playAsync();
-			setIsPlaying(true);
-		} else {
-			if (isPlaying) {
-				await sound.pauseAsync();
-			} else {
-				await sound.playAsync();
+		const loadMeditation = async () => {
+			if (!id) return;
+			const data = await getById(id);
+			if (data) {
+				setMeditationData(data as MeditationData);
+				setSoundUri(data.sound || "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
 			}
-			setIsPlaying(!isPlaying);
+			setLoading(false);
+		};
+		loadMeditation();
+	}, [id]);
+
+	// Синхронизируем состояние только при изменении soundUri (новый трек)
+	useEffect(() => {
+		if (soundUri && player) {
+			setIsPlaying(false); // Сбрасываем состояние при загрузке нового трека
 		}
+	}, [soundUri]);
+
+	const togglePlayPause = () => {
+		if (!player || !soundUri) {
+			console.log("❌ Player или soundUri отсутствуют");
+			return;
+		}
+
+		try {
+			if (isPlaying) {
+				// console.log("⏸️ Пауза...");
+				player.pause();
+				setIsPlaying(false);
+			} else {
+				// console.log("▶️ Воспроизведение...");
+				player.play();
+				setIsPlaying(true);
+			}
+		} catch (error) {
+			console.error("❌ Ошибка переключения:", error);
+		}
+	};
+
+	if (loading)
+		return (
+			<WrapperScreen>
+				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+					<ActivityIndicator size="large" color="#0000ff" />
+				</View>
+			</WrapperScreen>
+		);
+
+	if (!meditationData) {
+		return (
+			<WrapperScreen>
+				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+					<ActivityIndicator size="large" color="#0000ff" />
+				</View>
+			</WrapperScreen>
+		);
 	}
 
 	return (
 		<WrapperScreen>
 			<View style={styles.container}>
-				{/* Верхняя часть: Название */}
-				<View style={styles.header}>
-					<Text style={styles.title}>Утреннее спокойствие</Text>
-					<Text style={styles.subtitle}>Медитация • 10 мин</Text>
-				</View>
+				<PlayerHeader title={meditationData.title} duration={meditationData.duration} />
 
-				{/* Центр: Пульсирующая сфера */}
-				<View style={styles.sphereContainer}>
-					<Animated.View style={[styles.mainSphere, animatedSphereStyle]} />
-				</View>
+				<AnimatedSphere isPlaying={isPlaying} />
 
-				{/* Низ: Управление плеером */}
-				<View style={styles.controls}>
-					<TouchableOpacity onPress={() => {}}>
-						<Ionicons name="play-back-outline" size={40} color="white" />
-					</TouchableOpacity>
-
-					<TouchableOpacity style={styles.playButton} onPress={togglePlayPause}>
-						<Ionicons name={isPlaying ? "pause" : "play"} size={50} color="#4A90E2" />
-					</TouchableOpacity>
-
-					<TouchableOpacity onPress={() => {}}>
-						<Ionicons name="play-forward-outline" size={40} color="white" />
-					</TouchableOpacity>
-				</View>
+				<PlayerControls isPlaying={isPlaying} onToggle={togglePlayPause} />
 			</View>
 		</WrapperScreen>
 	);
@@ -82,6 +105,20 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		alignItems: "center",
 		paddingVertical: 50,
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	loadingText: {
+		color: "white",
+		marginTop: 20,
+		fontSize: 16,
+	},
+	errorText: {
+		color: "red",
+		fontSize: 18,
 	},
 	header: {
 		alignItems: "center",
