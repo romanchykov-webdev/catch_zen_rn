@@ -1,6 +1,6 @@
-import { AnimatedSphere } from "@/src/components/screens/media-palaer-screen/animated-sphere";
 import { PlayerControls } from "@/src/components/screens/media-palaer-screen/player-controls";
 import { PlayerHeader } from "@/src/components/screens/media-palaer-screen/player-header";
+import { SkiaAnimatedSphere } from "@/src/components/screens/media-palaer-screen/skia-animated-sphere";
 import { useAudioPlayer } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -106,7 +106,7 @@ export default function MeditationPlayer() {
 		<WrapperScreen>
 			<View style={styles.container}>
 				<PlayerHeader title={meditationData.title} duration={meditationData.duration} />
-				<AnimatedSphere isPlaying={isPlaying} />
+				<SkiaAnimatedSphere isPlaying={isPlaying} />
 				<PlayerControls
 					isPlaying={isPlaying}
 					isLooping={isLooping}
