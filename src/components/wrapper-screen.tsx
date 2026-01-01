@@ -18,7 +18,7 @@ const BASE_SIZE = width * 1.2; // Сделали чуть больше, чтоб
 
 // --- 1. Насыщенные цвета вместо бледных ---
 const COLORS = {
-	BLUE: "#4A90E2", // Был бледно-голубой, стал насыщенный небесный
+	BLUE: "#4A90E2", // насыщенный небесный
 	PURPLE: "#9B59B6", // Был бледно-лавандовый, стал мягкий фиолетовый
 	BG: "#F0F6FF", // Фон чуть-чуть холоднее
 };
@@ -96,7 +96,7 @@ export const WrapperScreen = ({ children }: { children: React.ReactNode }) => {
 					<BlurredOrb color={COLORS.PURPLE} />
 				</Animated.View>
 
-				{/* Вуаль сделали совсем тонкой, чтобы не глушить цвета */}
+				{/* Вуаль  */}
 				<View
 					style={{ ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(255,255,255,0.1)" }}
 					pointerEvents="none"
@@ -107,7 +107,7 @@ export const WrapperScreen = ({ children }: { children: React.ReactNode }) => {
 				style={{
 					flex: 1,
 					paddingTop: insets.top,
-					paddingBottom: insets.bottom,
+					// paddingBottom: insets.bottom,
 					paddingLeft: insets.left,
 					paddingRight: insets.right,
 				}}
