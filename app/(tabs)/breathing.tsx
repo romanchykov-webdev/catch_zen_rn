@@ -50,16 +50,16 @@ export default function BreathingScreen() {
 	}
 	return (
 		<WrapperScreen>
-			<View style={styles.container}>
-				<TitleScreen title="Дыхание" />
+			{/* <View style={styles.container}> */}
+			<TitleScreen title="Дыхание" />
 
-				<CardList
-					data={data}
-					renderItem={({ item }) => <ItemCard item={item} />}
-					keyExtractor={(item) => item.id}
-					showsVerticalScrollIndicator={false}
-				/>
-			</View>
+			<CardList
+				data={data}
+				renderItem={({ item }) => <ItemCard item={item} />}
+				keyExtractor={(item) => item.id}
+				showsVerticalScrollIndicator={false}
+			/>
+			{/* </View> */}
 		</WrapperScreen>
 	);
 }

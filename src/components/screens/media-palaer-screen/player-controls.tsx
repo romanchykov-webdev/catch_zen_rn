@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ButtonBack } from "../../button-back";
+import { PressableSpringCard } from "../../pressable-spring-card";
 
 interface ControlsProps {
 	isPlaying: boolean;
@@ -11,18 +12,29 @@ interface ControlsProps {
 
 export const PlayerControls = ({ isPlaying, isLooping, onToggle, onToggleLoop }: ControlsProps) => (
 	<View style={styles.controls}>
-		{/* <TouchableOpacity>
-			<Ionicons name="play-back-outline" size={40} color="white" />
-		</TouchableOpacity> */}
-		{/* <View style={styles.buttonBackContainer}> */}
+		{/* button back */}
+
 		<ButtonBack />
-		{/* </View> */}
-		<TouchableOpacity style={styles.playButton} onPress={onToggle}>
+
+		{/* button play/pause */}
+		<PressableSpringCard
+			android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
+			style={styles.playButton}
+			onPressOut={onToggle}
+			containerStyle={styles.shadowContainer}
+		>
 			<Ionicons name={isPlaying ? "pause" : "play"} size={50} color="#4A90E2" style={styles.playButtonIcon} />
-		</TouchableOpacity>
-		<TouchableOpacity onPress={onToggleLoop} style={styles.buttonRepeat}>
+		</PressableSpringCard>
+
+		{/* button repeat */}
+		<PressableSpringCard
+			android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
+			style={styles.buttonRepeat}
+			onPressOut={onToggleLoop}
+			containerStyle={styles.shadowContainer}
+		>
 			<Ionicons name="repeat" size={40} color={isLooping ? "#4A90E2" : "gray"} />
-		</TouchableOpacity>
+		</PressableSpringCard>
 	</View>
 );
 
@@ -32,6 +44,9 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		width: "80%",
 		justifyContent: "space-around",
+	},
+	shadowContainer: {
+		shadowOpacity: 0.5,
 	},
 	playButtonIcon: {
 		// marginLeft: 10,

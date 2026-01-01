@@ -51,16 +51,16 @@ export default function HomeScreen() {
 
 	return (
 		<WrapperScreen>
-			<View style={styles.container}>
-				<TitleScreen title="Медитация" />
+			{/* <View style={styles.container}> */}
+			<TitleScreen title="Медитация" />
 
-				<CardList
-					data={data}
-					renderItem={({ item }) => <ItemCard item={item} />}
-					keyExtractor={(item) => item.id}
-					showsVerticalScrollIndicator={false}
-				/>
-			</View>
+			<CardList
+				data={data}
+				renderItem={({ item }) => <ItemCard item={item} />}
+				keyExtractor={(item) => item.id}
+				showsVerticalScrollIndicator={false}
+			/>
+			{/* </View> */}
 		</WrapperScreen>
 	);
 }
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		// backgroundColor: "#F0F4F7",
-		paddingHorizontal: 20,
+		// paddingHorizontal: 10,
 		paddingTop: 20,
 	},
 });
