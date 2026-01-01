@@ -110,6 +110,8 @@ export const WrapperScreen = ({ children }: { children: React.ReactNode }) => {
 					// paddingBottom: insets.bottom,
 					paddingLeft: insets.left,
 					paddingRight: insets.right,
+					// paddingHorizontal: 10,
+					// backgroundColor: "red",
 				}}
 			>
 				{children}
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: COLORS.BG,
+		paddingHorizontal: 10,
 	},
 	backgroundContainer: {
 		overflow: "hidden",

@@ -131,6 +131,7 @@ export default function MeditationPlayer() {
 					title={meditationData.title}
 					duration={meditationData.duration}
 					categoryName={categoryName}
+					onMenuPress={() => console.log("menu")}
 				/>
 				<SkiaAnimatedSphere isPlaying={isPlaying} />
 				<PlayerControls
@@ -149,7 +150,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingVertical: 50,
+		paddingTop: 10,
+		paddingBottom: 50,
 	},
 	loadingContainer: {
 		flex: 1,

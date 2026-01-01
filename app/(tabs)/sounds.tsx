@@ -50,16 +50,16 @@ export default function SoundsScreen() {
 	}
 	return (
 		<WrapperScreen>
-			<View style={styles.container}>
-				<TitleScreen title="Звуки для сна" />
+			{/* <View style={styles.container}> */}
+			<TitleScreen title="Звуки для сна" />
 
-				<CardList
-					data={data}
-					renderItem={({ item }) => <ItemCard item={item} />}
-					keyExtractor={(item) => item.id}
-					showsVerticalScrollIndicator={false}
-				/>
-			</View>
+			<CardList
+				data={data}
+				renderItem={({ item }) => <ItemCard item={item} />}
+				keyExtractor={(item) => item.id}
+				showsVerticalScrollIndicator={false}
+			/>
+			{/* </View> */}
 		</WrapperScreen>
 	);
 }
