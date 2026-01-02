@@ -27,6 +27,10 @@ export default function MeditationPlayer() {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isLooping, setIsLooping] = useState(false);
 
+	//sleep timer
+
+	const [isActiveTimer, setIsActiveTimer] = useState(false);
+
 	const player = useAudioPlayer(soundUri || "");
 
 	// console.log("meditationData", meditationData);
@@ -133,6 +137,7 @@ export default function MeditationPlayer() {
 					duration={meditationData.duration}
 					categoryName={categoryName}
 					onMenuPress={() => router.push("/meditation-settings")}
+					isActiveTimer={isActiveTimer}
 				/>
 				<SkiaAnimatedSphere isPlaying={isPlaying} />
 				<PlayerControls
