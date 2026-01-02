@@ -33,7 +33,7 @@ export const PlayerHeader = ({
 	const { remainingSeconds } = useSleepTimerStore();
 
 	// const totalSeconds = hours * 3600 + minutes * 60;
-	console.log(remainingSeconds);
+	// console.log(remainingSeconds);
 
 	return (
 		<View style={styles.wrapperHeader}>
@@ -55,7 +55,7 @@ export const PlayerHeader = ({
 					title={title}
 					tilleStyle={{ fontWeight: "900" }}
 					subtitle={`${categoryName} • ${duration} мин`}
-					subtitleStyle={styles.subtitle}
+					subtitleStyle={{ fontSize: 16, color: "rgba(255,255,255,0.8)", marginTop: 5 }}
 				/>
 
 				{/* Отображение таймера сна */}
@@ -82,8 +82,6 @@ const styles = StyleSheet.create({
 		alignSelf: "flex-end",
 		paddingRight: 15,
 	},
-
-	header: { alignItems: "center", gap: 10, width: "100%" },
 	buttonMenu: {
 		backgroundColor: "rgba(255, 255, 255, 0.2)",
 		alignSelf: "flex-end",
@@ -93,29 +91,17 @@ const styles = StyleSheet.create({
 	shadowContainer: {
 		shadowOpacity: 0.5,
 	},
-	buttonBackContainer: {
-		flexDirection: "row",
-		alignItems: "flex-start",
-		justifyContent: "flex-start",
+	header: {
+		position: "relative",
+		alignItems: "center",
+		gap: 10,
 		width: "100%",
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		// backgroundColor: "red",
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: "bold",
-		color: "white",
-		textShadowRadius: 5,
-		textAlign: "center",
-	},
-	subtitle: {
-		fontSize: 16,
-		color: "rgba(255,255,255,0.8)",
-		marginTop: 5,
+		// paddingBottom: 30,
 	},
 	// timer container
 	timerContainer: {
+		position: "absolute",
+		bottom: -30,
 		// width: 230,
 		flexDirection: "row",
 		alignItems: "center",
@@ -137,5 +123,22 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 		color: "rgba(255,255,255,0.9)",
 		letterSpacing: 0.5,
+	},
+
+	// buttonBackContainer: {
+	// 	flexDirection: "row",
+	// 	alignItems: "flex-start",
+	// 	justifyContent: "flex-start",
+	// 	width: "100%",
+	// 	paddingHorizontal: 20,
+	// 	paddingVertical: 10,
+	// 	// backgroundColor: "red",
+	// },
+	title: {
+		fontSize: 24,
+		fontWeight: "bold",
+		color: "white",
+		textShadowRadius: 5,
+		textAlign: "center",
 	},
 });
