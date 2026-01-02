@@ -1,10 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 
-export const TitleScreen = ({ title }: { title: string }) => {
+interface Props {
+	title?: string;
+	subtitle?: string;
+	containerStyle?: StyleProp<ViewStyle>;
+	tilleStyle?: StyleProp<TextStyle>;
+	subtitleStyle?: StyleProp<TextStyle>;
+}
+
+export const TitleScreen = ({ title, subtitle, containerStyle, tilleStyle, subtitleStyle }: Props) => {
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Найди свой дзен</Text>
-			<Text style={styles.title}>{title}</Text>
+		<View style={[styles.container, containerStyle]}>
+			{title && <Text style={[styles.title, tilleStyle]}>{title}</Text>}
+			{subtitle && <Text style={[styles.title, subtitleStyle]}>{subtitle}</Text>}
 		</View>
 	);
 };

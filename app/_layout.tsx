@@ -23,6 +23,14 @@ export default function RootLayout() {
 						headerShown: false,
 					}}
 				/>
+				<Stack.Screen
+					name="meditation-settings"
+					options={{
+						presentation: "modal",
+						title: "Настройки",
+						headerShown: true,
+					}}
+				/>
 				<Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
 			</Stack>
 			<StatusBar style="auto" />

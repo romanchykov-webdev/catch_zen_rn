@@ -1,8 +1,9 @@
 import { PlayerControls } from "@/src/components/screens/media-palaer-screen/player-controls";
 import { PlayerHeader } from "@/src/components/screens/media-palaer-screen/player-header";
 import { SkiaAnimatedSphere } from "@/src/components/screens/media-palaer-screen/skia-animated-sphere";
+import { useSleepTimerStore } from "@/src/store/sleep-timer-store";
 import { useAudioPlayer } from "expo-audio";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { WrapperScreen } from "../src/components/wrapper-screen";
@@ -19,6 +20,7 @@ interface MeditationData {
 }
 
 export default function MeditationPlayer() {
+	const router = useRouter();
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const [meditationData, setMeditationData] = useState<MeditationData | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -26,7 +28,15 @@ export default function MeditationPlayer() {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isLooping, setIsLooping] = useState(false);
 
+	//sleep timer
+	const { isActive, remainingSeconds } = useSleepTimerStore();
 	const player = useAudioPlayer(soundUri || "");
+	useEffect(() => {
+		if (remainingSeconds === null) {
+			setIsPlaying(false);
+			player.pause();
+		}
+	}, [remainingSeconds, player]);
 
 	// console.log("meditationData", meditationData);
 
@@ -62,6 +72,7 @@ export default function MeditationPlayer() {
 		if (soundUri && player) {
 			setIsPlaying(false); // Сбрасываем состояние при загрузке нового трека
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [soundUri]);
 
 	// Устанавливаем зацикливание при изменении isLooping
@@ -131,7 +142,8 @@ export default function MeditationPlayer() {
 					title={meditationData.title}
 					duration={meditationData.duration}
 					categoryName={categoryName}
-					onMenuPress={() => console.log("menu")}
+					onMenuPress={() => router.push("/meditation-settings")}
+					isActiveTimer={isActive}
 				/>
 				<SkiaAnimatedSphere isPlaying={isPlaying} />
 				<PlayerControls

@@ -51,7 +51,7 @@ export default function BreathingScreen() {
 	return (
 		<WrapperScreen>
 			{/* <View style={styles.container}> */}
-			<TitleScreen title="Дыхание" />
+			<TitleScreen title="Найди свой дзен" subtitle="Дыхание" />
 
 			<CardList
 				data={data}
