@@ -1,35 +1,37 @@
 import { CardList } from "@/src/components/card-list";
-import { ItemCard } from "@/src/components/item-card";
 import { TitleScreen } from "@/src/components/title-screen";
 import { WrapperScreen } from "@/src/components/wrapper-screen";
-import { getSubcategoriesByCategoryId } from "@/src/services/getSubcategoriesByCategoryId";
-import { CardListProps } from "@/src/types/types-screen";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { useInfiniteSubcategories } from "@/src/TQ/hooks/use-infinite-subcategories";
+import { ActivityIndicator, Text, View } from "react-native";
 
 export default function BreathingScreen() {
-	const [data, setData] = useState<CardListProps[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	// 🎉 Используем infinite query вместо обычного
+	const {
+		flatData: data,
+		isLoading,
+		error,
+		hasMore,
+		loadMore,
+		isLoadingMore,
+		refetch,
+		isRefetching,
+	} = useInfiniteSubcategories(2, 10);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				setLoading(true);
-				const result = await getSubcategoriesByCategoryId(2);
-				// console.log("Полученные данные:", result);
-				setData(result as unknown as CardListProps[]);
-			} catch (err) {
-				console.error("Ошибка загрузки данных:", err);
-				setError("Не удалось загрузить данные");
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchData();
-	}, []);
+	// Обработчик прокрутки до конца списка
+	const handleEndReached = () => {
+		if (hasMore && !isLoadingMore) {
+			// console.log("📥 Загружаем следующую страницу...");
+			loadMore();
+		}
+	};
 
-	if (loading) {
+	// Обработчик pull-to-refresh
+	const handleRefresh = () => {
+		// console.log("🔄 Обновление данных по запросу пользователя...");
+		refetch();
+	};
+
+	if (isLoading) {
 		return (
 			<WrapperScreen>
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -43,7 +45,9 @@ export default function BreathingScreen() {
 		return (
 			<WrapperScreen>
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-					<Text style={{ color: "red" }}>{error}</Text>
+					<Text style={{ color: "red" }}>
+						{error instanceof Error ? error.message : "Не удалось загрузить данные"}
+					</Text>
 				</View>
 			</WrapperScreen>
 		);
@@ -51,26 +55,19 @@ export default function BreathingScreen() {
 	return (
 		<WrapperScreen>
 			{/* <View style={styles.container}> */}
-			<TitleScreen title="Дыхание" />
+			<TitleScreen title="Найди свой дзен" subtitle="Дыхание" />
 
 			<CardList
 				data={data}
-				renderItem={({ item }) => <ItemCard item={item} />}
-				keyExtractor={(item) => item.id}
-				showsVerticalScrollIndicator={false}
+				// Infinite scroll пропсы
+				onEndReached={handleEndReached}
+				onEndReachedThreshold={0.5}
+				isLoadingMore={isLoadingMore}
+				// Pull to refresh
+				onRefresh={handleRefresh}
+				isRefreshing={isRefetching}
 			/>
 			{/* </View> */}
 		</WrapperScreen>
 	);
 }
-const styles = StyleSheet.create({
-	contentContainer: {
-		flex: 1,
-	},
-	container: {
-		flex: 1,
-		// backgroundColor: "#F0F4F7",
-		paddingHorizontal: 20,
-		paddingTop: 20,
-	},
-});

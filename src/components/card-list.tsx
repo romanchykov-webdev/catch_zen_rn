@@ -1,15 +1,40 @@
-import { FlatList, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import { ItemCard } from "./item-card";
 
 interface Props {
 	data: any[];
-	renderItem: (item: any) => React.ReactNode;
-	keyExtractor: (item: any) => string;
 
-	showsVerticalScrollIndicator: boolean;
+	// Пропсы для infinite scroll
+	onEndReached?: () => void;
+	onEndReachedThreshold?: number;
+	isLoadingMore?: boolean;
+
+	// Pull to refresh
+	onRefresh?: () => void;
+	isRefreshing?: boolean;
 }
 
-export const CardList = ({ data, renderItem, keyExtractor, showsVerticalScrollIndicator }: Props) => {
+export const CardList = ({
+	data,
+
+	onEndReached,
+	onEndReachedThreshold = 0.5,
+	isLoadingMore = false,
+
+	onRefresh,
+	isRefreshing = false,
+}: Props) => {
+	// Футер со спиннером при загрузке следующей страницы
+	const renderFooter = () => {
+		if (!isLoadingMore) return null;
+
+		return (
+			<View style={styles.footer}>
+				<ActivityIndicator size="small" color="#0000ff" />
+			</View>
+		);
+	};
+
 	return (
 		<FlatList
 			data={data}
@@ -17,6 +42,16 @@ export const CardList = ({ data, renderItem, keyExtractor, showsVerticalScrollIn
 			keyExtractor={(item) => item.id}
 			contentContainerStyle={styles.list}
 			showsVerticalScrollIndicator={false}
+			// Infinite scroll props
+			onEndReached={onEndReached}
+			onEndReachedThreshold={onEndReachedThreshold}
+			ListFooterComponent={renderFooter}
+			// Pull to refresh
+			refreshControl={
+				onRefresh ? (
+					<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor="#0000ff" />
+				) : undefined
+			}
 		/>
 	);
 };
@@ -25,5 +60,9 @@ const styles = StyleSheet.create({
 	list: {
 		// paddingBottom: 20,
 		gap: 16,
+	},
+	footer: {
+		paddingVertical: 20,
+		alignItems: "center",
 	},
 });

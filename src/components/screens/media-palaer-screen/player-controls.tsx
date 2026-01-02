@@ -10,33 +10,36 @@ interface ControlsProps {
 	onToggleLoop: () => void;
 }
 
-export const PlayerControls = ({ isPlaying, isLooping, onToggle, onToggleLoop }: ControlsProps) => (
-	<View style={styles.controls}>
-		{/* button back */}
+export const PlayerControls = ({ isPlaying, isLooping, onToggle, onToggleLoop }: ControlsProps) => {
+	// console.log("isPlaying", isPlaying);
+	return (
+		<View style={styles.controls}>
+			{/* button back */}
 
-		<ButtonBack />
+			<ButtonBack />
 
-		{/* button play/pause */}
-		<PressableSpringCard
-			android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
-			style={styles.playButton}
-			onPressOut={onToggle}
-			containerStyle={styles.shadowContainer}
-		>
-			<Ionicons name={isPlaying ? "pause" : "play"} size={50} color="#4A90E2" style={styles.playButtonIcon} />
-		</PressableSpringCard>
+			{/* button play/pause */}
+			<PressableSpringCard
+				android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
+				style={styles.playButton}
+				onPressOut={onToggle}
+				containerStyle={styles.shadowContainer}
+			>
+				<Ionicons name={isPlaying ? "pause" : "play"} size={50} color="#4A90E2" style={styles.playButtonIcon} />
+			</PressableSpringCard>
 
-		{/* button repeat */}
-		<PressableSpringCard
-			android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
-			style={styles.buttonRepeat}
-			onPressOut={onToggleLoop}
-			containerStyle={styles.shadowContainer}
-		>
-			<Ionicons name="repeat" size={40} color={isLooping ? "#4A90E2" : "gray"} />
-		</PressableSpringCard>
-	</View>
-);
+			{/* button repeat */}
+			<PressableSpringCard
+				android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
+				style={styles.buttonRepeat}
+				onPressOut={onToggleLoop}
+				containerStyle={styles.shadowContainer}
+			>
+				<Ionicons name="repeat" size={40} color={isLooping ? "#4A90E2" : "gray"} />
+			</PressableSpringCard>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	controls: {
