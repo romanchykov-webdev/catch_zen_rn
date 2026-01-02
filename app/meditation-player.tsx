@@ -2,7 +2,7 @@ import { PlayerControls } from "@/src/components/screens/media-palaer-screen/pla
 import { PlayerHeader } from "@/src/components/screens/media-palaer-screen/player-header";
 import { SkiaAnimatedSphere } from "@/src/components/screens/media-palaer-screen/skia-animated-sphere";
 import { useAudioPlayer } from "expo-audio";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { WrapperScreen } from "../src/components/wrapper-screen";
@@ -19,6 +19,7 @@ interface MeditationData {
 }
 
 export default function MeditationPlayer() {
+	const router = useRouter();
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const [meditationData, setMeditationData] = useState<MeditationData | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -131,7 +132,7 @@ export default function MeditationPlayer() {
 					title={meditationData.title}
 					duration={meditationData.duration}
 					categoryName={categoryName}
-					onMenuPress={() => console.log("menu")}
+					onMenuPress={() => router.push("/meditation-settings")}
 				/>
 				<SkiaAnimatedSphere isPlaying={isPlaying} />
 				<PlayerControls

@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import React, { useRef } from "react";
 import { Animated, Platform, Pressable, PressableProps, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
@@ -38,11 +39,13 @@ export const PressableSpringCard = ({
 	const handlePressIn = (e: any) => {
 		animateTo(scaleTo);
 		externalOnPressIn?.(e);
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
 	const handlePressOut = (e: any) => {
 		animateTo(1);
 		externalOnPressOut?.(e);
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
 	return (
