@@ -61,9 +61,14 @@ export const PlayerHeader = ({
 				{/* Отображение таймера сна */}
 				{isActiveTimer && (
 					<View style={styles.timerContainer}>
-						<Ionicons name="moon-outline" size={16} color="rgba(255,255,255,0.9)" />
+						<View style={styles.textIconContainer}>
+							<Ionicons name="moon-outline" size={16} color="rgba(255,255,255,0.9)" />
 
-						<Text style={styles.timerText}>Таймер сна: {formatTime(remainingSeconds || 0)}</Text>
+							<Text style={styles.timerText}>Таймер сна:</Text>
+							<Text style={[styles.timerText, styles.timerValue]}>
+								{formatTime(remainingSeconds || 0)}
+							</Text>
+						</View>
 					</View>
 				)}
 			</View>
@@ -118,15 +123,24 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "rgba(255, 255, 255, 0.3)",
 	},
+	textIconContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+
+		gap: 8,
+	},
 	timerText: {
-		width: "80%",
+		// width: 95,
 		// backgroundColor: "red",
 		fontSize: 14,
 		fontWeight: "600",
 		color: "rgba(255,255,255,0.9)",
 		letterSpacing: 0.5,
 	},
-
+	timerValue: {
+		width: 95,
+		marginTop: 3,
+	},
 	title: {
 		fontSize: 24,
 		fontWeight: "bold",
