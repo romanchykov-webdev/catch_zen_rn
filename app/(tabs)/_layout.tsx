@@ -8,7 +8,7 @@ export default function TabLayout() {
 		<Tabs
 			screenOptions={{
 				tabBarActiveTintColor: "#4A90E2",
-				tabBarInactiveTintColor: "gray",
+				tabBarInactiveTintColor: "rgba(0,0,0,0.5)",
 				headerShown: false,
 				// Настройка стиля самой панели
 				tabBarStyle: {
@@ -18,6 +18,11 @@ export default function TabLayout() {
 					height: 80,
 					backgroundColor: "transparent",
 				},
+				// Стили текста для всех табов
+				tabBarLabelStyle: {
+					fontSize: 14,
+					fontWeight: "500",
+				},
 
 				tabBarBackground: () => <BlurView intensity={100} tint="light" style={StyleSheet.absoluteFill} />,
 			}}
@@ -26,7 +31,7 @@ export default function TabLayout() {
 				name="index"
 				options={{
 					title: "Медитация",
-					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="meditation" size={24} color={color} />,
+					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="meditation" size={30} color={color} />,
 					headerShown: false,
 				}}
 			/>
@@ -34,7 +39,7 @@ export default function TabLayout() {
 				name="breathing"
 				options={{
 					title: "Дыхание",
-					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-windy" size={26} color={color} />,
+					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-windy" size={30} color={color} />,
 					headerShown: false,
 				}}
 			/>
@@ -42,7 +47,7 @@ export default function TabLayout() {
 				name="sounds"
 				options={{
 					title: "Звуки",
-					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-night" size={26} color={color} />,
+					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-night" size={30} color={color} />,
 					headerShown: false,
 				}}
 			/>
