@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		elevation: 5,
+		// elevation: 5,
 	},
 	buttonRepeat: {
 		backgroundColor: "rgba(255, 255, 255, 0.2)",

@@ -45,7 +45,7 @@ export const PlayerHeader = ({
 					containerStyle={styles.shadowContainer}
 					onPressOut={onMenuPress}
 				>
-					<Ionicons name="settings-outline" size={25} color="white" />
+					<Ionicons name="settings-outline" size={25} color="rgba(0,0,0,0.5)" />
 				</PressableSpringCard>
 			</View>
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 		// backgroundColor: "red",
 		width: "80%",
 		position: "absolute",
-		bottom: -30,
+		bottom: -35,
 		// width: 230,
 		flexDirection: "row",
 		alignItems: "center",
