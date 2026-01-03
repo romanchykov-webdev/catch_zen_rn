@@ -58,7 +58,7 @@ export const CardList = ({
 
 const styles = StyleSheet.create({
 	list: {
-		// paddingBottom: 20,
+		paddingBottom: 100,
 		gap: 16,
 	},
 	footer: {

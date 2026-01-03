@@ -74,13 +74,15 @@ export const PressableSpringCard = ({
 
 const styles = StyleSheet.create({
 	shadowContainer: {
-		elevation: 8,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 1,
-		shadowRadius: 3,
 		borderRadius: 5,
-		overflow: Platform.OS === "android" ? "hidden" : "visible", // важно для тени на iOS
-		// marginBottom: 16,
+		overflow: Platform.OS === "android" ? "hidden" : "visible",
+		...Platform.select({
+			ios: {
+				shadowColor: "#000",
+				shadowOffset: { width: 0, height: 4 },
+				shadowOpacity: 0.25,
+				shadowRadius: 8,
+			},
+		}),
 	},
 });
