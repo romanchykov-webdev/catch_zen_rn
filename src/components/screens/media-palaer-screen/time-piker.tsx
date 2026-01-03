@@ -1,79 +1,59 @@
-import { Picker } from "@react-native-picker/picker";
 import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import WheelPicker from "react-native-wheely";
 
 type Props = {
-	initialHours?: number; // начальные часы (0-23)
-	initialMinutes?: number; // начальные минуты (0-59)
+	initialHours?: number;
+	initialMinutes?: number;
 	onTimeChange?: (hours: number, minutes: number) => void;
 };
 
-const TimePicker: React.FC<Props> = ({ initialHours = 12, initialMinutes = 0, onTimeChange }) => {
+const TimePicker: React.FC<Props> = ({ initialHours = 0, initialMinutes = 0, onTimeChange }) => {
 	const [selectedHours, setSelectedHours] = useState(initialHours);
 	const [selectedMinutes, setSelectedMinutes] = useState(initialMinutes);
 
-	// Генерируем массивы для часов (0-23) и минут (00, 01, ..., 59)
-	const hours = Array.from({ length: 24 }, (_, i) => i);
-	const minutes = Array.from({ length: 60 }, (_, i) => i);
+	const hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, "0"));
+	const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, "0"));
 
-	const handleHoursChange = (itemValue: number) => {
-		// Тактильная вибрация при изменении часов
+	const handleHoursChange = (index: number) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-		setSelectedHours(itemValue);
-		onTimeChange?.(itemValue, selectedMinutes);
+		setSelectedHours(index);
+		onTimeChange?.(index, selectedMinutes);
 	};
 
-	const handleMinutesChange = (itemValue: number) => {
-		// Тактильная вибрация при изменении минут
+	const handleMinutesChange = (index: number) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-		setSelectedMinutes(itemValue);
-		onTimeChange?.(selectedHours, itemValue);
+		setSelectedMinutes(index);
+		onTimeChange?.(selectedHours, index);
 	};
 
 	return (
 		<View style={styles.container}>
-			{/* <Text style={styles.label}>Выберите время</Text> */}
-
 			<View style={styles.pickerContainer}>
-				{/* Часы */}
-				<View style={styles.pickerWrapper}>
-					<Picker
-						selectedValue={selectedHours}
-						onValueChange={handleHoursChange}
-						style={styles.picker}
-						itemStyle={styles.pickerItem}
-						mode="dialog"
-					>
-						{hours.map((hour) => (
-							<Picker.Item key={hour} label={hour.toString().padStart(2, "0")} value={hour} />
-						))}
-					</Picker>
-				</View>
+				<WheelPicker
+					selectedIndex={selectedHours}
+					options={hours}
+					onChange={handleHoursChange}
+					containerStyle={styles.wheelPicker}
+					itemTextStyle={styles.itemText}
+					selectedIndicatorStyle={styles.selectedIndicator}
+				/>
 
 				<Text style={styles.separator}>:</Text>
 
-				{/* Минуты */}
-				<View style={styles.pickerWrapper}>
-					<Picker
-						selectedValue={selectedMinutes}
-						onValueChange={handleMinutesChange}
-						style={styles.picker}
-						itemStyle={styles.pickerItem}
-						mode="dialog"
-					>
-						{minutes.map((minute) => (
-							<Picker.Item key={minute} label={minute.toString().padStart(2, "0")} value={minute} />
-						))}
-					</Picker>
-				</View>
+				<WheelPicker
+					selectedIndex={selectedMinutes}
+					options={minutes}
+					onChange={handleMinutesChange}
+					containerStyle={styles.wheelPicker}
+					itemTextStyle={styles.itemText}
+					selectedIndicatorStyle={styles.selectedIndicator}
+				/>
 			</View>
 
-			{/* Отображение выбранного времени */}
 			<Text style={styles.selectedTime}>
-				Выбрано: {selectedHours.toString().padStart(2, "0")}:{selectedMinutes.toString().padStart(2, "0")}
+				Выбрано: {hours[selectedHours]}:{minutes[selectedMinutes]}
 			</Text>
 		</View>
 	);
@@ -83,55 +63,38 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: "center",
 		padding: 20,
-		backgroundColor: "#f8f8f8",
-		// backgroundColor: "red",
+		backgroundColor: "#fff",
 		borderRadius: 12,
-	},
-	label: {
-		fontSize: 18,
-		marginBottom: 20,
-		fontWeight: "600",
 	},
 	pickerContainer: {
 		flexDirection: "row",
 		alignItems: "center",
-		backgroundColor: "#fff",
-		borderRadius: 12,
-		overflow: "hidden",
-		...Platform.select({
-			ios: {
-				shadowColor: "#000",
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.1,
-				shadowRadius: 4,
-			},
-			android: {
-				elevation: 4,
-			},
-		}),
+		height: 200,
 	},
-	pickerWrapper: {
-		width: 120,
-		height: 180,
+	wheelPicker: {
+		width: 100,
+		height: 200,
 	},
-	picker: {
-		width: 120,
-		height: 180,
-	},
-	pickerItem: {
+	itemText: {
 		fontSize: 32,
 		color: "#000",
+	},
+	selectedIndicator: {
+		backgroundColor: "rgba(0, 0, 0, 0.1)",
+		borderRadius: 8,
 	},
 	separator: {
 		fontSize: 40,
 		fontWeight: "300",
 		paddingHorizontal: 10,
-		marginTop: 20,
+		marginBottom: 10,
+		color: "#000",
 	},
 	selectedTime: {
-		marginTop: 30,
+		marginTop: 20,
 		fontSize: 24,
 		fontWeight: "bold",
+		color: "#000",
 	},
 });
 
