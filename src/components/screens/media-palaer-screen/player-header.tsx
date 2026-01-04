@@ -30,10 +30,11 @@ export const PlayerHeader = ({
 
 	isActiveTimer,
 }: PlayerHeaderProps) => {
-	const { remainingSeconds } = useSleepTimerStore();
+	const { remainingSeconds,	hours,minutes } = useSleepTimerStore();
 
 	// const totalSeconds = hours * 3600 + minutes * 60;
-	// console.log(remainingSeconds);
+	console.log("hours",hours);
+	console.log("minutes",minutes);
 
 	return (
 		<View style={styles.wrapperHeader}>

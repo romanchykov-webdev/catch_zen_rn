@@ -52,9 +52,9 @@ const TimePicker: React.FC<Props> = ({ initialHours = 0, initialMinutes = 0, onT
 				/>
 			</View>
 
-			<Text style={styles.selectedTime}>
+			{/* <Text style={styles.selectedTime}>
 				Выбрано: {hours[selectedHours]}:{minutes[selectedMinutes]}
-			</Text>
+			</Text> */}
 		</View>
 	);
 };
