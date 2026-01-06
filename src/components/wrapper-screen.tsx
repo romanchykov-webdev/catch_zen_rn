@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: COLORS.BG,
-		paddingHorizontal: 10,
+		// paddingHorizontal: 10,
 	},
 	backgroundContainer: {
 		overflow: "hidden",
