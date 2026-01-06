@@ -4,21 +4,37 @@ import { SkiaAnimatedSphere } from "@/src/components/screens/media-palaer-screen
 import TimePickerBottomSheet from "@/src/components/screens/media-palaer-screen/time-picker-bottom-sheet";
 import { WrapperScreen } from "@/src/components/wrapper-screen"; // Absolute imports
 import { useMeditationLogic } from "@/src/hooks/use-meditation-logic";
-import { useSleepTimerStore } from "@/src/store/sleep-timer-store";
+import { useTimerCountdown } from "@/src/hooks/use-timer-countdown";
+import { selectEndTime, selectHours, selectIsActive, selectMinutes, useSleepTimerStore } from "@/src/store/sleep-timer-store";
+// import { useSleepTimerStore } from "@/src/store/sleep-timer-store";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 export default function MeditationPlayer() {
-	const { data, isLoading, categoryName, playerState, timerState, navigation } = useMeditationLogic();
+	const { data, isLoading, categoryName, playerState } = useMeditationLogic();
 
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
-	// Sleep Timer Store
-	const { hours, minutes, isActive, setTime, startTimer, stopTimer } = useSleepTimerStore();
+	
+	// ✅ Используем селекторы - подписываемся только на нужные части store
+	const isActive = useSleepTimerStore(selectIsActive);
+	const endTime = useSleepTimerStore(selectEndTime);
+	const hours = useSleepTimerStore(selectHours);
+	const minutes = useSleepTimerStore(selectMinutes);
+	const { setTime, startTimer, stopTimer } = useSleepTimerStore();
 
-	// Локальное состояние для выбранного времени
-	const [selectedHours, setSelectedHours] = useState(hours);
-	const [selectedMinutes, setSelectedMinutes] = useState(minutes);
+		// ✅ Локальный обратный отсчет (не вызывает перерисовки других компонентов)
+		const remainingSeconds = useTimerCountdown({ 
+			endTime, 
+			isActive,
+			onTimerEnd: () => {
+				// Здесь можно остановить воспроизведение
+				if (playerState.isPlaying) {
+					playerState.togglePlayPause();
+				}
+				stopTimer();
+			}
+		});
 
 	// Открыть Bottom Sheet
 	const handleOpenSettings = () => {
@@ -27,13 +43,11 @@ export default function MeditationPlayer() {
 
 	// Изменение времени
 	const handleTimeChange = (newHours: number, newMinutes: number) => {
-		setSelectedHours(newHours);
-		setSelectedMinutes(newMinutes);
+		setTime(newHours, newMinutes);
 	};
 
 	// Запуск таймера
 	const handleStartTimer = () => {
-		setTime(selectedHours, selectedMinutes);
 		startTimer();
 		bottomSheetRef.current?.close();
 	};
@@ -44,13 +58,12 @@ export default function MeditationPlayer() {
 		bottomSheetRef.current?.close();
 	};
 
-	// Остановка таймера при размонтировании компонента
+	// Остановка таймера при размонтировании
 	useEffect(() => {
 		return () => {
-			// console.log("Компонент плеера размонтирован");
 			stopTimer();
 		};
-	}, []);
+	}, [stopTimer]);
 
 	// Единый экран загрузки/ошибки
 	if (isLoading || !data) {
@@ -70,9 +83,9 @@ export default function MeditationPlayer() {
 					title={data.title}
 					duration={data.duration}
 					categoryName={categoryName}
-					// onMenuPress={navigation.goToSettings}
 					onMenuPress={handleOpenSettings}
-					isActiveTimer={timerState.isActive}
+					isActiveTimer={isActive}
+					remainingSeconds={remainingSeconds}
 				/>
 
 				{/* Анимация получает статус напрямую из логики */}

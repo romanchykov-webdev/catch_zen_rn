@@ -1,6 +1,6 @@
 import { PressableSpringCard } from "@/src/components/pressable-spring-card";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 type Props = {
 	onTimeChange: (hours: number, minutes: number) => void;
@@ -21,7 +21,7 @@ const FastButtonMinutes = ({ onTimeChange, onStartTimer }: Props) => {
 			{minArray.map((item, index) => {
 				return (
 					<PressableSpringCard onPress={() => changeTimeHandler(item)} key={index} style={styles.buttonMinut}>
-						<Text style={styles.textButtonMinut}>{item}</Text>
+						<Text style={styles.textButtonMinut}>{item} m</Text>
 					</PressableSpringCard>
 				);
 			})}
@@ -45,9 +45,17 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		justifyContent: "center",
 		alignItems: "center",
+		...Platform.select({
+			ios: {
+				shadowColor: "#fff",
+				shadowOffset: { width: 0, height: 0 },
+				shadowOpacity: 0.25,
+				shadowRadius: 8,
+			},
+		}),
 	},
 	textButtonMinut: {
-		fontSize: 16,
+		fontSize: 20,
 		color: "#fff",
 		fontWeight: "bold",
 	},

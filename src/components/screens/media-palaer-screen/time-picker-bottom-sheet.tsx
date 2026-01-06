@@ -5,6 +5,8 @@ import React, { forwardRef, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import FastButtonMinutes from "./fast-button-minutes";
 import TimePicker from "./time-piker";
+			
+
 
 type Props = {
 	initialHours: number;
@@ -16,11 +18,23 @@ type Props = {
 };
 
 const TimePickerBottomSheet = forwardRef<BottomSheet, Props>(
-	({ initialHours, initialMinutes, isActive, onTimeChange, onStartTimer, onStopTimer }, ref) => {
+	({ 
+		initialHours, 
+		initialMinutes, 
+		isActive, 
+		onTimeChange, 
+		onStartTimer, 
+		onStopTimer }
+		, ref
+	) => {
 		//
-		const snapPoints = useMemo(() => ["60%", "85%"], []);
+	// console.log("initialHours",initialHours)
+	// console.log("initialMinutes",initialMinutes)
+
+		const snapPoints = useMemo(() => ["60%", "90%"], []);
 
 		return (
+			
 			<BottomSheet
 				ref={ref}
 				index={-1}
@@ -35,46 +49,49 @@ const TimePickerBottomSheet = forwardRef<BottomSheet, Props>(
 				activeOffsetY={[-10, 10]}
 				failOffsetX={[-10, 10]}
 			>
-				<BottomSheetView style={styles.contentContainer}>
-					<Text style={styles.title}>
-						Таймер сна
-					</Text>
+				{/* <BlurView intensity={60} tint="dark" style={StyleSheet.absoluteFill} > */}
+					<BottomSheetView style={styles.contentContainer}>
+						<Text style={styles.title}>
+							Таймер сна
+						</Text>
 
-					<FastButtonMinutes 
-						onTimeChange={onTimeChange} 
-						onStartTimer={onStartTimer} 
-					/>
+						<FastButtonMinutes 
+							onTimeChange={onTimeChange} 
+							onStartTimer={onStartTimer} 
+						/>
 
-					<TimePicker
-						initialHours={initialHours}
-						initialMinutes={initialMinutes}
-						onTimeChange={onTimeChange}
-					/>
+						<TimePicker
+							initialHours={initialHours}
+							initialMinutes={initialMinutes}
+							onTimeChange={onTimeChange}
+						/>
 
-					{/* wrapper start/stop buttons */}
-					<View style={styles.wrapperButtons}>
-						{/* start timer button */}
-						<PressableSpringCard
-							style={styles.button}
-							onPress={onStartTimer}
-							containerStyle={styles.shadowContainer}
-						>
-							<MaterialIcons name="alarm-add" size={45} color="green" />
-						</PressableSpringCard>
-
-						{/*stop timer button */}
-						{isActive && (
+						{/* wrapper start/stop buttons */}
+						<View style={styles.wrapperButtons}>
+							{/* start timer button */}
 							<PressableSpringCard
-								style={[styles.button]}
-								onPress={onStopTimer}
+								style={styles.button}
+								onPress={onStartTimer}
 								containerStyle={styles.shadowContainer}
 							>
-								<MaterialIcons name="alarm-off" size={45} color="red" />
+								<MaterialIcons name="alarm-add" size={45} color="green" />
 							</PressableSpringCard>
-						)}
-					</View>
-				</BottomSheetView>
+
+							{/*stop timer button */}
+							{isActive && (
+								<PressableSpringCard
+									style={[styles.button]}
+									onPress={onStopTimer}
+									containerStyle={styles.shadowContainer}
+								>
+									<MaterialIcons name="alarm-off" size={45} color="red" />
+								</PressableSpringCard>
+							)}
+						</View>
+					</BottomSheetView>
+				{/* </BlurView> */}
 			</BottomSheet>
+		
 		);
 	},
 );
@@ -84,7 +101,9 @@ TimePickerBottomSheet.displayName = "TimePickerBottomSheet";
 const styles = StyleSheet.create({
 	bottomSheetBackground: {
 		// backgroundColor: "#f8f8f8",
-		backgroundColor: "rgba(255, 255, 255, 0.9)",
+		backgroundColor: "rgba(0, 0, 0, 0.9)",
+
+		// backgroundColor: "rgba(255, 255, 255, 0.5)",
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
 	},
@@ -101,7 +120,10 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		marginBottom: 20,
 		textAlign: "center",
-		color: "#000",
+		color: "rgba(255, 255, 255, 0.5)",
+		textShadowRadius: 5,
+		textShadowColor: "rgba(255, 255, 255, 0.5)",
+		textShadowOffset: { width: 3, height: 3 },
 	},
 
 	wrapperButtons: {
