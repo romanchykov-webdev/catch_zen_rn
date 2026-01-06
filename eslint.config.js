@@ -1,10 +1,17 @@
 // https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
+const { defineConfig } = require("eslint/config");
+const expoConfig = require("eslint-config-expo/flat");
 
 module.exports = defineConfig([
-  expoConfig,
-  {
-    ignores: ['dist/*'],
-  },
+	expoConfig,
+	{
+		ignores: ["dist/*", "node_modules/*"],
+	},
+	{
+		plugins: ["prettier"],
+		extends: ["prettier"],
+		rules: {
+			"prettier/prettier": "warn",
+		},
+	},
 ]);

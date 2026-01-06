@@ -6,7 +6,7 @@ import { WrapperScreen } from "@/src/components/wrapper-screen"; // Absolute imp
 import { useMeditationLogic } from "@/src/hooks/use-meditation-logic";
 import { useSleepTimerStore } from "@/src/store/sleep-timer-store";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 export default function MeditationPlayer() {
@@ -43,6 +43,14 @@ export default function MeditationPlayer() {
 		stopTimer();
 		bottomSheetRef.current?.close();
 	};
+
+	// Остановка таймера при размонтировании компонента
+	useEffect(() => {
+		return () => {
+			// console.log("Компонент плеера размонтирован");
+			stopTimer();
+		};
+	}, []);
 
 	// Единый экран загрузки/ошибки
 	if (isLoading || !data) {

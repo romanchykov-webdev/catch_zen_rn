@@ -1,9 +1,9 @@
 import { PressableSpringCard } from "@/src/components/pressable-spring-card";
 import { MaterialIcons } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
-import type { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { forwardRef, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import FastButtonMinutes from "./fast-button-minutes";
 import TimePicker from "./time-piker";
 
 type Props = {
@@ -17,12 +17,8 @@ type Props = {
 
 const TimePickerBottomSheet = forwardRef<BottomSheet, Props>(
 	({ initialHours, initialMinutes, isActive, onTimeChange, onStartTimer, onStopTimer }, ref) => {
+		//
 		const snapPoints = useMemo(() => ["60%", "85%"], []);
-
-		// Backdrop для затемнения фона
-		const renderBackdrop = (props: BottomSheetDefaultBackdropProps) => (
-			<BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.5} />
-		);
 
 		return (
 			<BottomSheet
@@ -32,7 +28,6 @@ const TimePickerBottomSheet = forwardRef<BottomSheet, Props>(
 				enablePanDownToClose={true}
 				backgroundStyle={styles.bottomSheetBackground}
 				handleIndicatorStyle={styles.handleIndicator}
-				// backdropComponent={renderBackdrop}
 				// Ключевые настройки для решения конфликта жестов
 				enableContentPanningGesture={false}
 				enableHandlePanningGesture={true}
@@ -42,8 +37,13 @@ const TimePickerBottomSheet = forwardRef<BottomSheet, Props>(
 			>
 				<BottomSheetView style={styles.contentContainer}>
 					<Text style={styles.title}>
-						Настройте время через которое приложение остановит воспроизведение автоматически
+						Таймер сна
 					</Text>
+
+					<FastButtonMinutes 
+						onTimeChange={onTimeChange} 
+						onStartTimer={onStartTimer} 
+					/>
 
 					<TimePicker
 						initialHours={initialHours}
@@ -83,7 +83,8 @@ TimePickerBottomSheet.displayName = "TimePickerBottomSheet";
 
 const styles = StyleSheet.create({
 	bottomSheetBackground: {
-		backgroundColor: "#f8f8f8",
+		// backgroundColor: "#f8f8f8",
+		backgroundColor: "rgba(255, 255, 255, 0.9)",
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
 	},
@@ -96,12 +97,13 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 32,
 		fontWeight: "bold",
 		marginBottom: 20,
 		textAlign: "center",
 		color: "#000",
 	},
+
 	wrapperButtons: {
 		flexDirection: "row",
 		justifyContent: "center",
