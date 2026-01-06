@@ -1,4 +1,4 @@
-import { useSleepTimerStore } from "@/src/store/sleep-timer-store";
+// import { useSleepTimerStore } from "@/src/store/sleep-timer-store";
 import { useAudioPlayer } from "expo-audio";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -29,7 +29,7 @@ export const useMeditationLogic = () => {
 	const { data, isLoading, error } = useItemById(id);
 
 	// Sleep Timer Store
-	const { isActive, remainingSeconds } = useSleepTimerStore();
+	// const { isActive, remainingSeconds } = useSleepTimerStore();
 
 	// Audio Player
 	// Инициализируем плеер только если есть soundUri.
@@ -42,13 +42,13 @@ export const useMeditationLogic = () => {
 	const [isLooping, setIsLooping] = useState(false);
 
 	// Логика таймера сна
-	useEffect(() => {
-		// Если таймер активен и дошел до 0
-		if (isActive && remainingSeconds === 0 && player?.playing) {
-			player.pause();
-			setIsPlaying(false);
-		}
-	}, [remainingSeconds, isActive, player]);
+	// useEffect(() => {
+	// 	// Если таймер активен и дошел до 0
+	// 	if (isActive && remainingSeconds === 0 && player?.playing) {
+	// 		player.pause();
+	// 		setIsPlaying(false);
+	// 	}
+	// }, [remainingSeconds, isActive, player]);
 
 	// Управление Loop
 	useEffect(() => {
@@ -107,9 +107,9 @@ export const useMeditationLogic = () => {
 			togglePlayPause,
 			toggleLooping,
 		},
-		timerState: {
-			isActive,
-		},
+		// timerState: {
+		// 	isActive,
+		// },
 		navigation: {
 			goBack: router.back,
 			goToSettings: () => router.push("/meditation-settings"),
